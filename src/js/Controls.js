@@ -58,7 +58,7 @@ class Controls {
     this.enabled = false;
 
     this.initDraggable();
-    /*this.initClickable();*/
+    this.initClickable();
   }
 
   enable() {
@@ -239,30 +239,27 @@ class Controls {
     };
   }
 
-  /*initClickable() {
+  initClickable() {
     this.clickable = new Clickable(this.game.dom.game);
 
     this.clickable.onClickStart = position => {
-      if (this.scramble !== null) return;
       if (this.state === PREPARING || this.state === ROTATING) return;
-
-      this.gettingDrag = this.state === ANIMATING;
-
-      console.log("Click Start")
-
-    }
+    };
 
     this.clickable.onClickEnd = position => {
-      if (this.scramble !== null) return;
-      if (this.state !== ROTATING) {
-        this.gettingDrag = false;
-        this.state = STILL;
-        return;
+      if (this.state !== STILL) return;
+
+      const edgeIntersect = this.getIntersect(
+        position.current,
+        this.game.cube.edges,
+        true
+      );
+
+      if (edgeIntersect !== false) {
+        this.game.handleInput(edgeIntersect);
       }
-      console.log("Click End")
-      this.state = ANIMATING;
     };
-  }*/
+  }
 
   /*rotateLayer(rotation, scramble, callback) {
     const config = scramble ? 0 : this.flipConfig;

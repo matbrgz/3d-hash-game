@@ -10,6 +10,7 @@ import { Scores } from "./Scores.js";
 import { Storage } from "./Storage.js";
 import { Themes } from "./Themes.js";
 import { States } from "./States.js";
+import { TicTacToe } from "./TicTacToe.js";
 // import { Keyboard } from './Keyboard.js';
 
 import { Icons } from "./Icons.js";
@@ -71,6 +72,7 @@ class Game {
     this.storage = new Storage(this);
     this.confetti = new Confetti(this);
     this.themes = new Themes(this);
+    this.ticTacToe = new TicTacToe(this);
     /*this.themeEditor = new ThemeEditor(this);*/
 
     this.initActions();
