@@ -99,6 +99,16 @@ class Game {
     }, 500);
   }
 
+  handleInput(intersect) {
+    if (this.state !== STATE.Playing) return;
+
+    // intersect.object is the edge mesh
+    const edge = intersect.object;
+
+    // Pass the edge object directly to TicTacToe logic
+    this.ticTacToe.makeMove(edge);
+  }
+
   initActions() {
     let tappedTwice = false;
 
@@ -303,7 +313,7 @@ class Game {
     }
   }
 
-  complete(show) {
+  complete(show, winner) {
     if (show) {
       this.transition.buttons(BUTTONS.Complete, BUTTONS.Playing);
 
@@ -314,13 +324,17 @@ class Game {
       this.timer.stop();
       this.storage.clearGame();
 
-      this.bestTime = this.scores.addScore(this.timer.deltaTime);
+      // this.bestTime = this.scores.addScore(this.timer.deltaTime);
 
       this.transition.zoom(STATE.Menu, 0);
       this.transition.elevate(SHOW);
 
+      // Modify complete text to show winner
+      const completeText = this.dom.texts.complete;
+      completeText.innerHTML = `<span>${winner ? winner + " WINS!" : "DRAW!"}</span>`;
+
       setTimeout(() => {
-        this.transition.complete(SHOW, this.bestTime);
+        this.transition.complete(SHOW, false);
         this.confetti.start();
       }, 1000);
     } else {

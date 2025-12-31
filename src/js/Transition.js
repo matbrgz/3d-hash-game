@@ -74,7 +74,9 @@ class Transition {
 
     try {
       this.tweens.cube.stop();
-    } catch (e) {}
+    } catch (e) {
+      // Do nothing
+    }
 
     const currentY = this.game.cube.animator.position.y;
     const currentRotation = this.game.cube.animator.rotation.x;
@@ -115,7 +117,9 @@ class Transition {
   float() {
     try {
       this.tweens.float.stop();
-    } catch (e) {}
+    } catch (e) {
+      // Do nothing
+    }
 
     this.tweens.float = new Tween({
       duration: 1500,
@@ -381,8 +385,8 @@ class Transition {
     const timer = this.game.dom.texts.timer;
 
     timer.style.opacity = 0;
-    this.game.timer.convert();
-    this.game.timer.setText();
+    // this.game.timer.convert();
+    // this.game.timer.setText();
 
     this.splitLetters(timer);
     const letters = timer.querySelectorAll("i");
@@ -410,7 +414,9 @@ class Transition {
   flipLetters(type, letters, show) {
     try {
       this.tweens[type].forEach(tween => tween.stop());
-    } catch (e) {}
+    } catch (e) {
+      // Do nothing
+    }
 
     letters.forEach((letter, index) => {
       letter.style.opacity = show ? 0 : 1;

@@ -127,6 +127,9 @@ class Cube {
       this.geometry.edgeDepth
     );
 
+    // Create canvas textures for X and O
+    this.createTextures();
+
     this.positions.forEach((position, index) => {
       const piece = new THREE.Object3D();
       const pieceCube = pieceMesh.clone();
@@ -179,6 +182,53 @@ class Cube {
     });
   }
 
+  createTextures() {
+    this.textures = {
+      X: this.createTexture("X"),
+      O: this.createTexture("O"),
+      empty: this.createTexture("")
+    };
+  }
+
+  createTexture(text) {
+    const canvas = document.createElement("canvas");
+    canvas.width = 128;
+    canvas.height = 128;
+    const ctx = canvas.getContext("2d");
+
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, 128, 128);
+
+    if (text) {
+      ctx.fillStyle = text === "X" ? "#ef3923" : "#41aac8";
+      ctx.font = "bold 80px Arial";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(text, 64, 64);
+    }
+
+    const texture = new THREE.CanvasTexture(canvas);
+    return texture;
+  }
+
+  resetVisuals() {
+    if (!this.edges) return;
+    this.edges.forEach(edge => {
+      edge.material.map = null;
+      edge.material.color.setHex(0xffffff);
+      edge.userData.mark = null;
+    });
+  }
+
+  // setPieceMark(pieceIndex, faceIndex, mark) {}
+
+  // Revised setPieceMark that takes the actual edge object mesh
+  setEdgeMark(edge, mark) {
+    edge.material.color.setHex(0xffffff);
+    edge.material.map = this.textures[mark];
+    edge.userData.mark = mark;
+  }
+
   updateColors(colors) {
     if (typeof this.pieces !== "object" && typeof this.edges !== "object")
       return;
@@ -186,7 +236,13 @@ class Cube {
     this.pieces.forEach(piece =>
       piece.userData.cube.material.color.setHex(colors.P)
     );
-    this.edges.forEach(edge => edge.material.color.setHex(colors[edge.name]));
+    this.edges.forEach(edge => {
+      // If it has a mark, don't color it with face color?
+      // Actually, we want to start white.
+      if (!edge.userData.mark) {
+        edge.material.color.setHex(0xffffff);
+      }
+    });
   }
 
   loadFromData(data) {
