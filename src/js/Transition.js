@@ -385,8 +385,8 @@ class Transition {
     const timer = this.game.dom.texts.timer;
 
     timer.style.opacity = 0;
-    this.game.timer.convert();
-    this.game.timer.setText();
+    // this.game.timer.convert();
+    // this.game.timer.setText();
 
     this.splitLetters(timer);
     const letters = timer.querySelectorAll("i");

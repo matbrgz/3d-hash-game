@@ -31,18 +31,7 @@ class Themes {
   }
 
   getColors() {
-    this.colorcube = {
-      U: 0xfff7ff, // white
-      D: 0xfff7ff, // yellow
-      F: 0xfff7ff, // red
-      R: 0xfff7ff, // blue
-      B: 0xfff7ff, // orange
-      L: 0xfff7ff, // green
-      P: 0x08101a, // piece
-      G: 0xd1d5db // background
-    }
-
-    return this.colorcube;
+    return this.defaults.cube;
   }
 
   setTheme(theme = false, force = false) {
