@@ -247,7 +247,8 @@ class Controls {
     };
 
     this.clickable.onClickEnd = position => {
-      if (this.state !== STILL) return;
+      // Allow click if state is STILL or PREPARING (started drag but didn't rotate)
+      if (this.state !== STILL && this.state !== PREPARING) return;
 
       const edgeIntersect = this.getIntersect(
         position.current,

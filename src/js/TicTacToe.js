@@ -1,3 +1,4 @@
+// Core logic for Tic-Tac-Toe gameplay
 class TicTacToe {
   constructor(game) {
     this.game = game;
