@@ -71,6 +71,18 @@ class Storage {
 
       if (!scoresData) throw new Error();
 
+      // Migration check: if scores contains numbers, convert them to objects
+      for (const key in scoresData) {
+          if (scoresData[key].scores && scoresData[key].scores.length > 0) {
+              scoresData[key].scores = scoresData[key].scores.map(s => {
+                  if (typeof s === 'number') {
+                      return { time: s, name: 'Anonymous', date: Date.now() };
+                  }
+                  return s;
+              });
+          }
+      }
+
       this.game.scores.data = scoresData;
     } catch (e) {
       // Do nothing

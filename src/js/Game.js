@@ -11,6 +11,7 @@ import { Storage } from "./Storage.js";
 import { Themes } from "./Themes.js";
 import { States } from "./States.js";
 // import { Keyboard } from './Keyboard.js';
+import { TicTacToe } from "./TicTacToe.js";
 
 import { Icons } from "./Icons.js";
 
@@ -56,8 +57,12 @@ class Game {
         prefs: document.querySelector(".btn--prefs"),
         back: document.querySelector(".btn--back"),
         stats: document.querySelector(".btn--stats"),
-        reset: document.querySelector(".btn--reset")
-      }
+        reset: document.querySelector(".btn--reset"),
+        saveScore: document.querySelector(".btn-save-score")
+      },
+      modal: document.querySelector(".ui__complete-modal"),
+      input: document.querySelector("#winner-name"),
+      leaderboard: document.querySelector(".leaderboard__list")
     };
 
     this.world = new World(this);
@@ -72,6 +77,7 @@ class Game {
     this.confetti = new Confetti(this);
     this.themes = new Themes(this);
     /*this.themeEditor = new ThemeEditor(this);*/
+    this.ticTacToe = new TicTacToe(this);
 
     this.initActions();
 
@@ -111,6 +117,18 @@ class Game {
 
   initActions() {
     let tappedTwice = false;
+
+    this.dom.buttons.saveScore.onclick = () => {
+        const name = this.dom.input.value.trim() || "Anonymous";
+        const time = this.timer.deltaTime;
+
+        this.scores.addScore(time, name);
+        this.dom.modal.style.display = "none";
+        this.dom.input.value = "";
+
+        this.stats(SHOW);
+        this.complete(HIDE);
+    };
 
     this.dom.game.addEventListener(
       "click",
@@ -295,6 +313,15 @@ class Game {
 
       this.state = STATE.Stats;
 
+      // Update Leaderboard
+      const scores = this.scores.getLeaderboard();
+      this.dom.leaderboard.innerHTML = scores.map((s, i) => `
+        <div class="score-row">
+            <span>#${i+1} ${s.name}</span>
+            <span>${this.scores.convertTime(s.time)}</span>
+        </div>
+      `).join('');
+
       this.transition.buttons(BUTTONS.Stats, BUTTONS.Menu);
 
       this.transition.title(HIDE);
@@ -336,8 +363,18 @@ class Game {
       setTimeout(() => {
         this.transition.complete(SHOW, false);
         this.confetti.start();
+
+        // Show modal if there is a winner
+        if (winner) {
+            setTimeout(() => {
+                this.dom.modal.style.display = "flex";
+                this.dom.input.focus();
+            }, 1000);
+        }
+
       }, 1000);
     } else {
+        this.dom.modal.style.display = "none";
       this.state = STATE.Stats;
       this.saved = false;
 

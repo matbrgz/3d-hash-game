@@ -30,13 +30,14 @@ class Scores {
     };
   }
 
-  addScore(time) {
+  addScore(time, name) {
     const data = this.data[this.game.cube.sizeGenerated];
 
-    data.scores.push(time);
+    const score = { time, name, date: Date.now() };
+    data.scores.push(score);
     data.solves++;
 
-    if (data.scores.lenght > 100) data.scores.shift();
+    if (data.scores.length > 100) data.scores.shift();
 
     let bestTime = false;
 
@@ -50,6 +51,25 @@ class Scores {
     this.game.storage.saveScores();
 
     return bestTime;
+  }
+
+  getLeaderboard(count = 10) {
+    const data = this.data[this.game.cube.sizeGenerated];
+
+    if (!data || !data.scores) return [];
+
+    // Sort by time (ascending)
+    const sorted = [...data.scores].sort((a, b) => {
+        // Handle migration (old scores might be numbers)
+        const tA = typeof a === 'number' ? a : a.time;
+        const tB = typeof b === 'number' ? b : b.time;
+        return tA - tB;
+    });
+
+    return sorted.slice(0, count).map(s => {
+        if (typeof s === 'number') return { name: 'Unknown', time: s };
+        return s;
+    });
   }
 
   calcStats() {
@@ -79,7 +99,10 @@ class Scores {
     if (data.scores.length < count) return 0;
 
     return this.convertTime(
-      data.scores.slice(-count).reduce((a, b) => a + b, 0) / count
+      data.scores.slice(-count).reduce((a, b) => {
+        const time = typeof b === 'number' ? b : b.time;
+        return a + time;
+      }, 0) / count
     );
   }
 
