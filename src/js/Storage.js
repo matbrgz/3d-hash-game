@@ -72,7 +72,9 @@ class Storage {
       if (!scoresData) throw new Error();
 
       this.game.scores.data = scoresData;
-    } catch (e) {}
+    } catch (e) {
+      // Do nothing
+    }
   }
 
   saveScores() {
@@ -106,7 +108,9 @@ class Storage {
       localStorage.removeItem("theCube_scoresBest");
       localStorage.removeItem("theCube_scoresWorst");
       localStorage.removeItem("theCube_scoresSolves");
-    } catch (e) {}
+    } catch (e) {
+      // Do nothing
+    }
   }
 
   loadPreferences() {

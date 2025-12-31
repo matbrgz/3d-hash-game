@@ -89,13 +89,13 @@ function RoundedBoxGeometry(size, radius, radiusSegments) {
 
       if (y == radiusSegments) {
         vertex.set(0, 1, 0);
-        var vert = vertex
+        let vert = vertex
           .clone()
           .multiplyScalar(radius)
           .add(cornerOffset);
         cornerVerts[0].push(vert);
         vertexPool.push(vert);
-        var norm = vertex.clone();
+        let norm = vertex.clone();
         cornerNormals[0].push(norm);
         normalPool.push(norm);
         continue;
@@ -108,26 +108,26 @@ function RoundedBoxGeometry(size, radius, radiusSegments) {
         vertex.y = sinVa;
         vertex.z = cosVa * Math.sin(ha);
 
-        var vert = vertex
+        let vert = vertex
           .clone()
           .multiplyScalar(radius)
           .add(cornerOffset);
         cornerVerts[0].push(vert);
         vertexPool.push(vert);
 
-        var norm = vertex.clone().normalize();
+        let norm = vertex.clone().normalize();
         cornerNormals[0].push(norm);
         normalPool.push(norm);
       }
     }
 
     for (var i = 1; i < 8; i++) {
-      for (var j = 0; j < cornerVerts[0].length; j++) {
-        var vert = cornerVerts[0][j].clone().multiply(cornerLayout[i]);
+      for (let j = 0; j < cornerVerts[0].length; j++) {
+        let vert = cornerVerts[0][j].clone().multiply(cornerLayout[i]);
         cornerVerts[i].push(vert);
         vertexPool.push(vert);
 
-        var norm = cornerNormals[0][j].clone().multiply(cornerLayout[i]);
+        let norm = cornerNormals[0][j].clone().multiply(cornerLayout[i]);
         cornerNormals[i].push(norm);
         normalPool.push(norm);
       }
@@ -135,8 +135,6 @@ function RoundedBoxGeometry(size, radius, radiusSegments) {
   }
 
   function doCorners() {
-    var indexInd = 0;
-
     var flips = [true, false, true, false, false, true, false, true];
 
     var lastRowOffset = rs1 * (radiusSegments - 1);
@@ -148,12 +146,12 @@ function RoundedBoxGeometry(size, radius, radiusSegments) {
         var r1 = v * rs1;
         var r2 = (v + 1) * rs1;
 
-        for (var u = 0; u < radiusSegments; u++) {
-          var u1 = u + 1;
-          var a = cornerOffset + r1 + u;
-          var b = cornerOffset + r1 + u1;
-          var c = cornerOffset + r2 + u;
-          var d = cornerOffset + r2 + u1;
+        for (let u = 0; u < radiusSegments; u++) {
+          let u1 = u + 1;
+          let a = cornerOffset + r1 + u;
+          let b = cornerOffset + r1 + u1;
+          let c = cornerOffset + r2 + u;
+          let d = cornerOffset + r2 + u1;
 
           if (!flips[i]) {
             indices.push(a);
@@ -175,10 +173,10 @@ function RoundedBoxGeometry(size, radius, radiusSegments) {
         }
       }
 
-      for (var u = 0; u < radiusSegments; u++) {
-        var a = cornerOffset + lastRowOffset + u;
-        var b = cornerOffset + lastRowOffset + u + 1;
-        var c = cornerOffset + lastVertex;
+      for (let u = 0; u < radiusSegments; u++) {
+        let a = cornerOffset + lastRowOffset + u;
+        let b = cornerOffset + lastRowOffset + u + 1;
+        let c = cornerOffset + lastVertex;
 
         if (!flips[i]) {
           indices.push(a);
