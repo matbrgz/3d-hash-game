@@ -213,9 +213,10 @@ class Cube {
 
   resetVisuals() {
     if (!this.edges) return;
+    const colors = this.game.themes.getColors();
     this.edges.forEach(edge => {
       edge.material.map = null;
-      edge.material.color.setHex(0xffffff);
+      edge.material.color.setHex(colors[edge.name]);
       edge.userData.mark = null;
     });
   }
@@ -240,7 +241,7 @@ class Cube {
       // If it has a mark, don't color it with face color?
       // Actually, we want to start white.
       if (!edge.userData.mark) {
-        edge.material.color.setHex(0xffffff);
+        edge.material.color.setHex(colors[edge.name]);
       }
     });
   }
