@@ -9,9 +9,15 @@ A 3D Rubik's Cube game built with Three.js.
 
 ## Usage
 
-*   **Build**: Run `npm run build` to build the project. The output will be in the `export` directory (though the script seems to copy files there, you might need to create it first or adjust the script).
+*   **Build**: Run `npm run build` to build the project. The output will be in the `export` directory.
 *   **Lint**: Run `npm run lint` to check for code quality issues.
 *   **Development**: Run `rollup -c rollup.config.dev.js -w` (you might need to add a script for this) to watch for changes.
+
+## Deployment
+
+This project is configured for deployment on [Render](https://render.com).
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
 
 ## Features
 
