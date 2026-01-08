@@ -102,6 +102,7 @@ class Game {
   }
 
   handleInput(intersect) {
+    // Handle user interaction with the cube
     if (this.state !== STATE.Playing) return;
 
     // intersect.object is the edge mesh
